@@ -1,0 +1,93 @@
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<string.h>
+#include<stdio.h>
+#include<map>
+typedef long long int ll;//1507034
+//freopen("in.txt","r",stdin);
+using namespace std;
+int New;
+int level[10000];
+map<int,map<int,int> >cost;
+int dis=0;
+int save=0;
+vector<int>vec[100002];
+int bfs(int start)
+{
+    queue<int>q;
+    map<int,int>visited;
+    q.push(start);
+    level[start]=0;
+    visited[start]=1;
+    while(!q.empty())
+    {
+        int u=q.front();
+        q.pop();
+        for(int i=0; i<vec[u].size(); i++)
+        {
+            int v=vec[u][i];
+            if(visited[v]==0)
+            {
+                level[v]=level[u]+1;
+                visited[v]=1;
+                dis+=cost[u][v];
+                if(v==New && dis>save)save=dis;
+                q.push(v);
+            }
+        }
+    }
+}
+int main()
+{
+//    freopen("in.txt","r",stdin);
+    int test;
+    cin>>test;
+    while(test--)
+    {
+        int node;
+        cin>>node;
+        int a,b,c;
+        int node2=node;
+        for(int i=1; i<=node2; i++)vec[i].clear();
+        for(int i=1; i<=(node2-1); i++)
+        {
+            cin>>a>>b>>c;
+            vec[a].push_back(b);
+            vec[b].push_back(a);
+            cost[a][b]=c;
+            cost[b][a]=c;
+        }
+        bfs(a);
+        int maxi=0,path=0;
+        for(int i=1; i<=node2; i++)
+        {
+            if(level[i]>maxi)
+            {
+                maxi=level[i];
+                path=i;
+            }
+        }
+        New=path;
+        bfs(path);
+        maxi=0,path=0;
+        for(int i=1; i<=node2; i++)
+        {
+            if(level[i]>maxi)
+            {
+                maxi=level[i];
+                path=i;
+            }
+        }
+        int money=0;
+        dis=0;
+        bfs(path);
+        if(save<=100)money=0;
+        else if(save>100 && save<=1000)money=100;
+        else if(save>1000 &&save<=10000)money=1000;
+        else money=10000;
+        cout<<money<<" "<<save<<endl;
+        dis=0;
+    }
+
+}

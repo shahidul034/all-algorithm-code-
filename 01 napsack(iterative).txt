@@ -1,0 +1,63 @@
+#include<iostream>
+#include<stdio.h>
+#define inf 0xfffffff
+typedef long long int ll;//1507034
+using namespace std;
+int main()
+{
+//    freopen("in.txt","r",stdin);
+    int n,CAP;
+    cin>>n>>CAP;
+    int T[100][100];
+    int val[100],wt[100];
+    for(int i=0; i<n; i++)
+    {
+        cin>>val[i]>>wt[i];
+    }
+    for(int i=0; i<=n; i++)
+    {
+        for(int j=0; j<=CAP; j++)
+        {
+            if (i==0 || j==0)
+                T[i][j] = 0;
+            else if(wt[i-1] <= j)
+				 T[i][j]=max((val[i-1]+T[i-1][j-wt[i-1]]),T[i-1][j]);
+//			K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]);
+            else
+            {
+               T[i][j]=T[i-1][j];
+            }
+        }
+    }
+    cout<<"profit: "<<T[n][CAP]<<endl<<"taken element:\n";
+    int n1=n,CAP1=CAP;
+   while(n1>=0 && CAP1>=0)
+   {
+		if(T[n1][CAP1]==T[n1-1][CAP1]){
+			n1=n1-1;
+		}
+		else{
+			cout<<wt[n1-1]<<endl;
+			CAP1=CAP1-wt[n1-1];
+			n1--;
+
+		}
+   }
+
+
+
+}
+/* input:
+3 50
+60 10
+100 20
+120 30
+
+
+4 7
+1 1
+4 3
+5 4
+7 5
+
+*/

@@ -1,0 +1,69 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#define inf 1<<28
+typedef long long int ll;//1507034
+//freopen("in.txt","r",stdin);
+using namespace std;
+int mat[100][100];
+int nxt[100][100];
+int floyedwarshell(int n)
+{
+    for(int k=1;k<=n;k++)
+	{
+		for(int i=1;i<=n;i++)
+		{
+			for(int j=1;j<=n;j++)
+			{
+				mat[i][j]=min((mat[i][k]+mat[k][j]),mat[i][j]);
+				nxt[i][j]=nxt[i][k];
+			}
+		}
+	}
+}
+int showpath(int i,int j)
+{
+	if(i==j)return 0;
+	cout<<nxt[i][j]<<" ";
+	i=nxt[i][j];
+	showpath(i,j);
+}
+int main()
+{
+    freopen("in.txt","r",stdin);
+    int node;cin>>node;
+    int a,b,c;
+    for(int i=1;i<=node;i++)
+	{
+		for(int j=1;j<=node;j++)if(i!=j)mat[i][j]=inf;else mat[i][j]=0;
+	}
+	 for(int i=1;i<=node;i++)
+	{
+		for(int j=1;j<=node;j++)nxt[i][j]=j;
+	}
+	while(cin>>a>>b>>c)
+	{
+		cout<<a<<" "<<b<<" "<<c<<endl;
+		mat[a][b]=c;
+	}
+	for(int i=1;i<=node;i++)
+	{
+		for(int j=1;j<=node;j++)
+		{
+			cout<<mat[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl;
+	cout<<endl;
+	floyedwarshell(node);
+	for(int i=1;i<=node;i++)
+	{
+		for(int j=1;j<=node;j++)
+		{
+			cout<<mat[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	showpath(1,4);
+}

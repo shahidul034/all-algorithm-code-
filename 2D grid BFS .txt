@@ -1,0 +1,44 @@
+#include<iostream>
+#include<queue>
+#include<map>
+#define pii pair<int,int>
+typedef long long int ll;//1507034
+//freopen("in.txt","r",stdin);
+using namespace std;
+int n,m;
+map<int,map<int,int> >vec;
+int r[]={-1,0,1,0};
+int c[]={0,1,0,-1};
+int BFS(int x,int y)
+{
+	int visited[1000][1000];
+	int level[1000][1000];
+	queue<pii>q;
+	q.push(make_pair(x,y));
+	level[x][y]=0;
+	visited[x][y]=1;
+	while(!q.empty())
+	{
+		 x=q.front().first;
+		 y=q.front().second;
+		q.pop();
+		for(int i=0;i<4;i++)
+		{
+			int nr=x+r[i];
+			int nc=y+c[i];
+			if(!visited[nr][nc] && nr<=n && nc<=m && nr>=1 && nc>=1)
+			{
+				visited[nr][nc]=1;
+				q.push(make_pair(nr,nc));
+				level[nr][nc]=level[nr][nc]+1;
+			}
+		}
+	}
+}
+int main()
+{
+
+
+
+
+}

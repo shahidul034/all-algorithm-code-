@@ -1,0 +1,56 @@
+#include <iostream>
+#include<queue>
+#include<stdio.h>
+#define inf 345353454
+using namespace std;
+int dis[100];
+int cost[100][100];
+vector<int>vec[100];
+class compare
+{
+public:
+    bool operator() (pair<int, int> a, pair<int, int> b)
+    {
+        return a.second > b.second;
+    }
+};
+void dijaktra(int start)
+{
+    priority_queue< pair< int,int >, vector<pair<int,int> >, compare > priorQ;
+    for(int i=0; i<100; i++)dis[i]=inf;
+    dis[start]=0;
+    priorQ.push(make_pair(start,dis[start]));
+    while(!priorQ.empty())
+    {
+        int u = priorQ.top().first;
+        priorQ.pop();
+        for(int i=0; i<vec[u].size(); i++)
+        {
+            int v=vec[u][i];
+            if(cost[u][v]+dis[u]<dis[v])
+            {
+                dis[v]=cost[u][v]+dis[u];
+                priorQ.push(make_pair(v,dis[v]));
+
+            }
+        }
+    }
+}
+int main()
+{
+    freopen("in.txt","r",stdin);
+    int node;
+    cin>>node;
+    int a,b,c;
+    while(cin>>a>>b>>c)
+    {
+        vec[a].push_back(b);
+        cost[a][b]=c;
+    }
+    dijaktra(1);
+    for(int i=1; i<=node; i++)
+    {
+        cout<<dis[i]<<" ";
+    }
+
+}

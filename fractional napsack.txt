@@ -1,0 +1,51 @@
+#include<iostream>
+#include<stdio.h>
+#include<algorithm>
+#define inf 0xfffffff
+typedef long long int ll;//1507034
+using namespace std;
+class items
+{
+public:
+    int value,weight;
+    items(int v,int w):value(v),weight(w) {}
+};
+bool cmp(items it1,items it2)
+{
+    double d1=(double)it1.value/it1.weight;
+    double d2=(double)it2.value/it2.weight;
+    return d1>d2;
+}
+double fractionalKnapsack(int W,items arr[],int n)
+{
+    sort(arr,arr+n,cmp);
+    int CurWeight=0;
+    double finalValue=0.0;
+    for(int i=0; i<n; i++)
+    {
+        if((CurWeight+arr[i].weight)<=W)
+        {
+            CurWeight+=arr[i].weight;
+            finalValue+=arr[i].value;
+        }
+        else
+        {
+            int remain=W-CurWeight;
+            finalValue+=arr[i].value*((double)remain/arr[i].weight);
+            break;
+        }
+    }
+    return finalValue;
+}
+
+
+int main()
+{
+    //freopen("in.txt","r",stdin);
+    int W=50;
+    items arr[] = {{60, 10}, {100, 20}, {120, 30}};
+    int n=sizeof (arr)/sizeof(arr[0]);
+    cout << "Maximum value we can obtain = "<< fractionalKnapsack(W, arr, n)<<endl;
+
+
+}

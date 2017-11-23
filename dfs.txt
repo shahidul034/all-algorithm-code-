@@ -1,0 +1,63 @@
+#include<iostream>
+#include<queue>
+#include<stdio.h>
+#include<stack>
+typedef long long int ll;//1507034
+//freopen("in.txt","r",stdin);
+using namespace std;
+int visited[1000];
+vector<int>vec[1000];
+int DFS_VISIT(int );
+int starting_time[100],finishing_time[100];
+int DFS(int nodes)
+{
+    for(int i=1; i<=nodes; i++)
+    {
+        if(!visited[i])DFS_VISIT(i);
+    }
+}
+
+int DFS_VISIT(int node)
+{
+    stack<int>s;
+    s.push(node);
+    int time=1;
+    while(!s.empty())
+    {
+        int u=s.top();
+        starting_time[u]=time;
+        s.pop();
+        for(int i=0; i<vec[u].size(); i++)
+        {
+            int v=vec[u][i];
+            if(!visited[v])
+            {
+                s.push(v);
+                visited[v]=1;
+                time++;
+                starting_time[v]=time;
+            }
+        }
+        time++;
+        finishing_time[u]=time;
+    }
+}
+
+int main()
+{
+    freopen("in.txt","r",stdin);
+    int n;
+    cin>>n;
+    int n1,n2;
+    while(cin>>n1>>n2)
+    {
+        vec[n1].push_back(n2);
+    }
+    DFS(n);
+    for(int i=1; i<=n; i++)
+    {
+        cout<<finishing_time[i]<<" ";
+    }
+
+
+}

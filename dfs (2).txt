@@ -1,0 +1,62 @@
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<string.h>
+#include<stdio.h>
+#include<map>
+typedef long long int ll;//1507034
+//freopen("in.txt","r",stdin);
+using namespace std;
+int n,m,q;
+int cnt2=0;
+bool isvalid(int x,int y)
+{
+    return (x<=n && y<=m && x>=1 && y>=1);
+}
+int r[]= {-1,0,1,0};
+int c[]= {0,1,0,-1};
+map<int,map<int,int> >vec;
+int cnt=0;
+int dfs(int x,int y)
+{
+    if(!vec[x][y])return 0;
+    cnt2--;
+    vec[x][y]=0;
+    for(int i=0; i<4; i++)
+    {
+        int nr=x+r[i];
+        int nc=y+c[i];
+        if(isvalid(nr,nc))dfs(nr,nc);
+    }
+}
+int main()
+{
+    freopen("in.txt","r",stdin);
+
+    cin>>n>>m>>q;
+
+    for(int i=1; i<=n; i++)
+    {
+        for(int j=1; j<=m; j++)
+        {
+            int a;
+            cin>>a;
+            vec[i][j]=a;
+            if(a==1)cnt2++;
+        }
+    }
+
+    for(int i=0; i<q; i++)
+    {
+        int a1,b1;
+        cin>>a1>>b1;
+        int cnt=cnt2;
+        dfs(a1,b1);
+        cout<<cnt2<<endl;
+        cnt2=cnt;
+
+    }
+
+
+}
+

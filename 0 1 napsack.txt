@@ -1,0 +1,36 @@
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#define inf 0xfffffff
+typedef long long int ll;//1507034
+using namespace std;
+int dp[100][100],weight[100],cost[100],n,CAP;
+int napsack(int i,int w)
+{
+    if(i==n+1)
+    {
+        return 0;
+    }
+    if(dp[i][w]!=-1)return dp[i][w];
+    int profit1=0,profit2=0;
+    if((w+weight[i])<=CAP)
+    {
+        profit1=cost[i]+napsack(i+1,w+weight[i]);
+    }
+    profit2=napsack(i+1,w);
+    dp[i][w]=max(profit1,profit2);
+    return dp[i][w];
+}
+int main()
+{
+    freopen("in.txt","r",stdin);
+    memset(dp,-1,sizeof dp);
+    scanf("%d%d",&n,&CAP);
+    for(int i=1; i<=n; i++)
+    {
+        scanf("%d%d\n",&weight[i],&cost[i]);
+    }
+    printf("%d\n",napsack(1,0));
+
+
+}
