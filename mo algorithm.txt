@@ -1,0 +1,129 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define pb push_back
+#define mod 1000000007
+#define ll long long
+#define PRINT_CASE cout<<"Case "<<z<<":"
+#define TEST_CASE(t) for (int z = 1; z <= t; z++)
+#define sf(a) scanf("%d", &a)
+#define sfl(a) scanf("%lld", &a)
+#define D(x) cerr << __LINE__ << ": " << #x << " = " << (x) << '\n'
+#define DD(x, y) cerr << __LINE__ << ": " << #x << " = " << x << "   " << #y << " = " << y << '\n'
+#define DDD(x, y, z) cerr << __LINE__ << ": " << #x << " = " << x << "   " << #y << " = " << y << "   " << #z << " = " << z << '\n'
+#define DBG cerr << __LINE__ << ": Hi" << '\n'
+#define for0(i,n)           for(int i=0;i<n;i++)
+#define for1(i,n)           for(int i=1;i<=n;i++)
+#define forrev(i,n)         for(int i=n-1; i>=0; i--)
+#define forab(i,a,b)        for(int i=a;i<=b;i++)
+#define forba(i,b,a)        for(int i=b;i>=a;i--)
+#define stlloop(x)          for(__typeof(x.begin()) it=x.begin();it!=x.end();it++)
+#define all(x)              x.begin(),x.end()
+#define ms(a,b)             memset(a,b,sizeof(a))
+#define MAX_N 300000
+#define FastRead     ios_base::sync_with_stdio(false);cin.tie(NULL);
+#define sz(value) value.size()
+#define MAX(x, y) (((x) > (y))? (x) : (y))
+using namespace std;
+string yes = "YES";
+string no = "NO";
+
+int block_size, cnt = 0;
+int input[MAX_N];
+int freq[MAX_N];
+map<pair<int, int>, int>ans;
+int MR, ML;
+bool cmp(pair<int, int>p1, pair<int, int>p2) {
+	if (p1.first / block_size != p2.first / block_size)
+		return p1.first / block_size <= p2.first / block_size;
+	else return p1.second <= p2.second;
+}
+
+void add(int ele) {
+	int value = input[ele];
+	freq[value]++;
+	if (freq[value] == 1)cnt++;
+
+}
+void remove(int ele) {
+	int value = input[ele];
+	freq[value]--;
+	if (freq[value] == 0)cnt--;
+}
+
+int mo_algo(int L, int R) {
+	while (MR < R) {
+		MR++;
+		add(MR);
+	}
+	while (ML > L) {
+		ML--;
+		add(ML);
+	}
+	while (MR > R) {
+		remove(MR);
+		MR--;
+	}
+	while (ML < L) {
+		remove(ML);
+		ML++;
+	}
+	ans[make_pair(L, R)] = cnt;
+
+}
+
+int main()
+{
+	FastRead
+#ifndef ONLINE_JUDGE
+	freopen("in.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
+#endif
+	int t; cin >> t;
+	TEST_CASE (t) {
+		cnt = 0;
+		int n, q; cin >> n >> q;
+		for0(i, n) {
+			cin >> input[i];
+		}
+		std::vector<pair<int, int>> v1;
+		std::vector<pair<int, int>> v;
+		for0(i, q) {
+			int k1, k2; cin >> k1 >> k2;
+			k1--, k2--;
+			v.pb(make_pair(k1, k2));
+			v1.pb(make_pair(k1, k2));
+		}
+		block_size = sqrt(n);
+		sort(all(v), cmp);
+		ML = 0; MR = -1;
+		for0(i, v.size()) {
+			int l = v[i].first;
+			int r = v[i].second;
+			mo_algo(l, r);
+		}
+		PRINT_CASE;
+		cout << endl;
+		for0(i, v1.size()) {
+			int l = v1[i].first;
+			int r = v1[i].second;
+			cout << ans[make_pair(l, r)] << endl;
+		}
+		ans.clear();
+		ms(freq, 0);
+		ms(input, 0);
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+}

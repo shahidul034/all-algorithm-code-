@@ -1,0 +1,57 @@
+int dfs(int u, int from, int cnt)
+{
+	sparse_par[u][0] = from;
+	level[u] = cnt;
+	int node = -1, maxi = 0, total = 1;
+	for (int i = 0; i < SZ(g[u]); i++)
+	{
+		int v = g[u][i];
+		if (v != from)
+		{
+			int temp = dfs(v, u, cnt + 1);
+			total += temp;
+			if (temp > maxi)
+			{
+				maxi = temp;
+				node = v;
+			}
+		}
+	}
+
+	max_subtree[u] = node;
+	return total;
+}
+void build_table(int n)
+{
+	for (int j = 1; 1 << j <= n; j++)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			sparse_par[i][j] = sparse_par[sparse_par[i][j - 1]][j - 1];
+		}
+	}
+}
+
+int LCA_query(int p, int q)
+{
+	if (level[p] <= level[q]) swap(p, q);
+	int log = log2(level[p]);
+
+	for (int i = log; i >= 0; i--)
+	{
+		if (level[p] - (1 << i) >= level[q])
+			p = sparse_par[p][i];
+	}
+	if (p == q) return p;
+
+	for (int i = log; i >= 0; i--)
+	{
+		if (sparse_par[p][i] != sparse_par[q][i])
+		{
+			p = sparse_par[p][i];
+			q = sparse_par[q][i];
+		}
+	}
+
+	return sparse_par[p][0];
+}

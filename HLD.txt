@@ -1,0 +1,24 @@
+int chainNo = 0, chainHead[N], chainPos[N], chainInd[N], chainSize[N];
+void hld(int cur) {
+    if (chainHead[chainNo] == -1) chainHead[chainNo] = cur;//Given a node, to which chain does that node belong to.
+    chainInd[cur] = chainNo;//Given a node, to which chain does that node belong to.
+    chainPos[cur] = chainSize[chainNo];//Given a node, what is the position of that node in its chain.
+    chainSize[chainNo]++;//increase of the chain Given a chain, what is the length of the chain
+
+    int ind = -1, mai = -1;
+    for (int i = 0; i < adj[cur].sz; i++) {
+        if (subsize[ adj[cur][i] ] > mai) {
+            mai = subsize[ adj[cur][i] ];
+            ind = i;
+        }
+    }
+
+    if (ind >= 0) hld( adj[cur][ind] );//failed for the leaf node
+
+    for (int i = 0; i < adj[cur].sz; i++) {//normal nodes
+        if (i != ind) {
+            chainNo++;//new chain is created
+            hld( adj[cur][i] );
+        }
+    }
+}
